@@ -1,0 +1,38 @@
+This is the code of my submission to the 2022 CG:SHOP challenge. The code provides a SAT-based local search for graph coloring.
+
+The code requires the boost C++ libary. Then running ./run.sh in bash will run cmake, make, create necessary folders and will run a default instance.
+
+Colorings are stored in benchmark-results. CG:SHOP instances as line segment lists are in the folder instances.
+
+Glucose3 is from https://www.labri.fr/perso/lsimon/glucose/
+Cadical 1.5.0 is from https://github.com/arminbiere/cadical
+CG:SHOP 2022 instances are from https://cgshop.ibr.cs.tu-bs.de/competition/cg-shop-2022/
+
+General usage:
+planarity-cpp <instance>
+Instances are either
+- CG:SHOP instances where in each line of the file a line segment with x1 y1 x2 y2 is given.
+- DIMACS format instances compressed as bz2
+
+Apart from the output, the results are written in the folder benchmark-results, please ensure that the folder exists.
+Colorings, cliques, myciel lower bounds are written in files with the respective endings.
+
+Running the program without any flags will use DSATUR to compute a coloring. Using any local search method, will create a DSATUR coloring, if none exists.
+
+Running modes:
+-s0: Use Partialcol
+-s2: Use normal SAT-based local search.
+-e: Use encoding to compute optimal coloring.
+-q: Compute heuristic maximum cliques.
+
+Settings for SAT-based local search:
+-l: Use local search coloring instead of DSATUR coloring as input. Requires a run with -s0 beforehand.
+-n: Use previous result as input instead of DSATUR. Requires a run with the same settings beforehand.
+-a: Use Glucose instead of Cadical.
+-v: Use Varied parameters in the threads instead of the given parameters. Will ignore most other settings, except thread count.
+-w: Limit for swaps with chain propagation.
+-s: Offset for choosing the color to eliminate, without this the least prevalent color will be chosen.
+-t: SAT timeout
+-r: Initial nodes, given for historic reasons as 300/<-r value>.
+-d: Thread count.
+-i: Iteration limit.
